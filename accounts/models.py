@@ -4,15 +4,15 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.utils import timezone
 from .manager import MyUserManager
 
-
 class User(AbstractBaseUser):
     email = models.EmailField(max_length=255, unique=True)
     is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
     created = models.DateTimeField(default=timezone.now)
-    phone_regex = RegexValidator(regex=r'^((\+7)|8)\d{10}$',
-                                 message="Phone number must be entered in the format: '+79999999999' or '89999999999'.")
-    phone_number = models.CharField(validators=[phone_regex], max_length=12, null=True, blank=True)
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{11}$',
+                                 message="Phone number must be entered in the format: '+79123456789'. Up to 11 digits allowed.")
+    phone_number = models.CharField(validators=[phone_regex], max_length=12, unique=True)
     objects = MyUserManager()
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

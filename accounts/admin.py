@@ -1,12 +1,9 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth import get_user_model
 from .forms import UserCreationForm
+from .models import User
 
-User = get_user_model()
 
-
-@admin.register(User)
 class CustomUserAdmin(UserAdmin):
     add_form = UserCreationForm
 
@@ -24,3 +21,7 @@ class CustomUserAdmin(UserAdmin):
     )
     ordering = ('email',)
     filter_horizontal = ()
+
+
+# Now register the new UserAdmin...
+admin.site.register(User, CustomUserAdmin)
